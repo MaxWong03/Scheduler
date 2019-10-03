@@ -6,11 +6,28 @@ import DayList from "./DayList";
 
 import Appointment from "./Appointment/index";
 
-import {getAppointmentsForDay, getInterview} from "../helpers/selectors"
+import {getAppointmentsForDay, getInterview, getInterviewersForDay} from "../helpers/selectors"
 
 import "components/Application.scss";
 
 export default function Application(props) {
+  const bookInterview = (id, interview) => {
+    // console.log(id, interview);
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    return axios.put(`/api/appointments/${id}`, appointment)
+      .then(response => {
+        if (response.status === 204) setState({...state, appointments});
+      })
+
+  };
+
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -63,6 +80,8 @@ export default function Application(props) {
             id={appointment.id}
             time={appointment.time}
             interview={getInterview(state, appointment.interview)}
+            interviewers={getInterviewersForDay(state, state.day)}
+            bookInterview={bookInterview}
         />))}
         <Appointment key={"last"} time={"5pm"} />
         </Fragment>

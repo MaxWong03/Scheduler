@@ -16,7 +16,6 @@ export default function useApplicationData () {
       .then(response => {
         if (response.status === 204) setState({...state, appointments});
       })
-
   };
 
   const cancelInterview = (id) => {
@@ -59,7 +58,7 @@ export default function useApplicationData () {
         setState(prev => ({...prev, days, appointments, interviewers}));
       });
   },[]);
-  
+
   return {
     state,
     setDay,

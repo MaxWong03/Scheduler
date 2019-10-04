@@ -1,5 +1,9 @@
-import { useState, useEffect } from "react"; 
+import { useState, useEffect, useReducer } from "react"; 
 import axios from "axios";
+
+const SET_DAY = "SET_DAY";
+const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
+const SET_INTERVIEW = "SET_INTERVIEW";
 
 export default function useApplicationData () {
   const bookInterview = (id, interview) => {
@@ -14,7 +18,7 @@ export default function useApplicationData () {
     };
     return axios.put(`/api/appointments/${id}`, appointment)
       .then(response => {
-        if (response.status === 204) setState({...state, appointments});
+        if (response.status === 204) dispatchState({type: SET_INTERVIEW, value: appointments});
       })
   };
 
@@ -29,18 +33,36 @@ export default function useApplicationData () {
     };
     return axios.delete(`/api/appointments/${id}`, appointment)
       .then(response => {
-        if (response.status === 204) setState({...state, appointments})
+        if (response.status === 204) dispatchState({type: SET_INTERVIEW, value: appointments});
       })
   };
 
-  const [state, setState] = useState({
+  const stateLookup = {
+    [SET_DAY]: (state, day) => {
+      return ({...state, day});
+    },
+    [SET_APPLICATION_DATA]: (state, value) => {
+      const [days, appointments, interviewers] = value;
+      return ({...state, days, appointments, interviewers});
+    },
+    [SET_INTERVIEW]: (state, appointments) => {
+      return ({...state, appointments});
+    }
+  };
+
+  const reducer = (state, action) => {
+    return stateLookup[action.type](state, action.value) || new Error(`Tried to reduce with unsupported action type: ${action.type}`);
+  };
+
+
+  const [state, dispatchState] = useReducer(reducer, {
     day: "Monday",
     days: [],
     appointments: {},
     interviewers: {}
   });
 
-  const setDay = day => setState({...state, day});
+  const setDay = day => dispatchState({type: SET_DAY, value: day});
   
   useEffect(() => {
     const daysPromise = axios.get('/api/days');
@@ -55,7 +77,7 @@ export default function useApplicationData () {
         {data: appointments},
         {data: interviewers}
       ]) => {
-        setState(prev => ({...prev, days, appointments, interviewers}));
+        dispatchState({type: SET_APPLICATION_DATA, value: [days, appointments, interviewers]});
       });
   },[]);
 

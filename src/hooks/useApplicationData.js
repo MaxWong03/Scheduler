@@ -1,13 +1,13 @@
-import { useState, useEffect, useReducer } from "react"; 
+import { useEffect, useReducer } from "react"; 
 import axios from "axios";
 
 const SET_DAY = "SET_DAY";
 const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 const SET_INTERVIEW = "SET_INTERVIEW";
+const COUNT_SPOTS = "COUNT_SPOTS";
 
 export default function useApplicationData () {
   const bookInterview = (id, interview) => {
-    // console.log(id, interview);
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -18,7 +18,13 @@ export default function useApplicationData () {
     };
     return axios.put(`/api/appointments/${id}`, appointment)
       .then(response => {
-        if (response.status === 204) dispatchState({type: SET_INTERVIEW, value: appointments});
+        if (response.status === 204){
+          dispatchState({type: SET_INTERVIEW, value: appointments});
+          if(!state.appointments[id].interview) {
+            dispatchState({type: COUNT_SPOTS, value: -1});
+          }
+
+        } 
       })
   };
 
@@ -33,8 +39,18 @@ export default function useApplicationData () {
     };
     return axios.delete(`/api/appointments/${id}`, appointment)
       .then(response => {
-        if (response.status === 204) dispatchState({type: SET_INTERVIEW, value: appointments});
+        if (response.status === 204){
+          dispatchState({type: SET_INTERVIEW, value: appointments});
+          dispatchState({type: COUNT_SPOTS, value: 1});
+        }
       })
+  };
+
+  const rebuildDays = (days, day) => {
+    return days.map(d => {
+      if (d.name === day.name) return {...d, spots: day.spots}
+      else return d;
+    });
   };
 
   const stateLookup = {
@@ -47,6 +63,11 @@ export default function useApplicationData () {
     },
     [SET_INTERVIEW]: (state, appointments) => {
       return ({...state, appointments});
+    },
+    [COUNT_SPOTS]: (state, value) => {
+      const dayObj = state.days.filter(day => day.name === state.day)[0];
+      const day = {...dayObj, spots: dayObj.spots + value};
+      return ({...state, days: rebuildDays(state.days, day)});
     }
   };
 

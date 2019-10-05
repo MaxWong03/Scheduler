@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import "./styles.scss";
 import Show from "./Show";
@@ -41,17 +41,21 @@ export default function Appointment(props) {
   }
 
   const interview = props.interview;
-  const {mode, transition, back} = useVisualMode(interview ? SHOW : EMPTY);
+  const { mode, transition, back } = useVisualMode(interview ? SHOW : EMPTY);
+  useEffect(() => {
+    if (mode === EMPTY && interview) transition(SHOW);
+    if (mode === SHOW && !interview) transition(EMPTY);
+  }, [interview, transition, mode]);
   return (
     <article className="appointment">
       <Header time={props.time} />
-      {mode === EMPTY && <Empty onAdd={(event) => {transition(CREATE)}}/>}
-      {mode === SHOW && (
-        <Show 
+      {mode === EMPTY && <Empty onAdd={(event) => { transition(CREATE) }} />}
+      {mode === SHOW && interview && (
+        <Show
           student={interview.student}
           interviewer={interview.interviewer}
-          onDelete={() => {transition(CONFIRM)}}
-          onEdit={() => {transition(EDIT)}}
+          onDelete={() => { transition(CONFIRM) }}
+          onEdit={() => { transition(EDIT) }}
         />
       )}
       {mode === CREATE && (
@@ -61,27 +65,27 @@ export default function Appointment(props) {
           onSave={save}
         />
       )}
-      { 
+      {
         mode === EDIT && (
-        <Form
-          name={interview.student}
-          interviewer={interview.interviewer ? interview.interviewer.id : 0}
-          interviewers={props.interviewers}
-          onCancel={back}
-          onSave={save}
-        />
-      )}
+          <Form
+            name={interview.student}
+            interviewer={interview.interviewer ? interview.interviewer.id : 0}
+            interviewers={props.interviewers}
+            onCancel={back}
+            onSave={save}
+          />
+        )}
       {mode === CONFIRM && (
-        <Confirm 
-          message={"Are you sure you would like to delete?"} 
-          onConfirm={() => destroy()} 
+        <Confirm
+          message={"Are you sure you would like to delete?"}
+          onConfirm={() => destroy()}
           onCancel={back}
         />
       )}
-      {mode === SAVING && (<Status message={"Saving"}/>)}
-      {mode === DELETING && (<Status message={"Deleting"}/>)}
-      {mode === ERROR_SAVE && (<Error message={"Can not save appointment"} onClose={back}/>)}
-      {mode === ERROR_DELETE && (<Error message ={"Can not cancel appointment"} onClose={back}/>)}
+      {mode === SAVING && (<Status message={"Saving"} />)}
+      {mode === DELETING && (<Status message={"Deleting"} />)}
+      {mode === ERROR_SAVE && (<Error message={"Can not save appointment"} onClose={back} />)}
+      {mode === ERROR_DELETE && (<Error message={"Can not cancel appointment"} onClose={back} />)}
     </article>
   );
 }

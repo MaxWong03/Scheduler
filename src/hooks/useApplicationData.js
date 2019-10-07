@@ -130,6 +130,6 @@ export default function useApplicationData() {
     state,
     setDay,
     bookInterview,
-    cancelInterview
+      cancelInterview
   }
 };

@@ -99,9 +99,9 @@ export default function useApplicationData() {
   const setDay = day => dispatchState({ type: SET_DAY, value: day });
 
   useEffect(() => {
-    const daysPromise = axios.get('/api/days');
-    const appointmentPromise = axios.get('/api/appointments');
-    const interviewersPromise = axios.get('/api/interviewers');
+    const daysPromise = axios.get(`${process.env.REACT_APP_API_URL}/api/days`);
+    const appointmentPromise = axios.get(`${process.env.REACT_APP_API_URL}/api/appointments`);
+    const interviewersPromise = axios.get(`${process.env.REACT_APP_API_URL}/api/interviewers`);
     const apiSocket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
     Promise.all([
       daysPromise,

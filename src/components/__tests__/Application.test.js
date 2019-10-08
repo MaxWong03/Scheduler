@@ -58,7 +58,6 @@ describe("Application", () => {
       target: { value: "Max Wong" }
     })
     fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
-    // console.log(prettyDOM(appointment));
     fireEvent.click(getByText(appointment, "Save"));
     expect(getByText(appointment, "Saving")).toBeInTheDocument();
     await waitForElement(() => getByText(appointment, "Max Wong"));

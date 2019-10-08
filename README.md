@@ -10,7 +10,7 @@ Interview Scheduler is a Full Stack Web App built in `ReactJS` with `Storybook`,
 ### Editing an Appointment
 ![Editing Appointment](https://github.com/MaxWong03/Scheduler/blob/master/docs/edit.gif)
 ### Deleting an Appointment
-![Deleting Appointment]()
+![Deleting Appointment](https://github.com/MaxWong03/Scheduler/blob/master/docs/delete.gif)
 ### Live Updates via Web Socket
 ![Live Updates]()
 ### Error Handling

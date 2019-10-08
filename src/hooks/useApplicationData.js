@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from "react";
 import axios from "axios";
-import reducer, { SET_APPLICATION_DATA, SET_DAY, SET_APPOINTMENT, SET_INTERVIEW, COUNT_SPOTS } from "../reducers/application";
+import reducer, { SET_APPLICATION_DATA, SET_DAY, SET_APPOINTMENT, SET_INTERVIEW} from "../reducers/application";
 
 export default function useApplicationData() {
   const bookInterview = (id, interview) => {
@@ -16,10 +16,6 @@ export default function useApplicationData() {
       .then(response => {
         if (response.status === 204) {
           dispatchState({ type: SET_INTERVIEW, value: appointments });
-          if (!state.appointments[id].interview) {
-            dispatchState({ type: COUNT_SPOTS, value: -1 });
-          }
-
         }
       })
   };
@@ -37,7 +33,6 @@ export default function useApplicationData() {
       .then(response => {
         if (response.status === 204) {
           dispatchState({ type: SET_INTERVIEW, value: appointments });
-          dispatchState({ type: COUNT_SPOTS, value: 1 });
         }
       })
   };

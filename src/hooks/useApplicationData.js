@@ -1,38 +1,22 @@
 import { useEffect, useReducer } from "react";
 import axios from "axios";
-import reducer, { SET_APPLICATION_DATA, SET_DAY, SET_APPOINTMENT, SET_INTERVIEW} from "../reducers/application";
+import reducer, { SET_APPLICATION_DATA, SET_DAY, SET_INTERVIEW} from "../reducers/application";
 
 export default function useApplicationData() {
   const bookInterview = (id, interview) => {
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview }
-    };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
-    return axios.put(`/api/appointments/${id}`, appointment)
+    return axios.put(`/api/appointments/${id}`, {interview})
       .then(response => {
         if (response.status === 204) {
-          dispatchState({ type: SET_INTERVIEW, value: appointments });
+          dispatchState({ type: SET_INTERVIEW, value: {id, interview} });
         }
       })
   };
 
   const cancelInterview = (id) => {
-    const appointment = {
-      ...state.appointments[id],
-      interview: null
-    };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
-    return axios.delete(`/api/appointments/${id}`, appointment)
+    return axios.delete(`/api/appointments/${id}`)
       .then(response => {
         if (response.status === 204) {
-          dispatchState({ type: SET_INTERVIEW, value: appointments });
+          dispatchState({ type: SET_INTERVIEW, value: {id, interview: null} });
         }
       })
   };
@@ -68,7 +52,7 @@ export default function useApplicationData() {
     apiSocket.onmessage = (event) => {
       const { type, id, interview } = JSON.parse(event.data);
       if (type === SET_INTERVIEW) {
-        dispatchState({ type: SET_APPOINTMENT, value: { id, interview } });
+        dispatchState({ type: SET_INTERVIEW, value: { id, interview } });
       }
     }
     return () => apiSocket.close();

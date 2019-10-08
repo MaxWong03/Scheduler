@@ -39,7 +39,7 @@ describe("Appointments", () => {
   it("should cancel an interview", () => {
     cy.get(".appointment__card--show")
       .trigger("mouseover");
-    cy.get('img[alt="Delete"')
+    cy.get('img[alt="Delete"]')
       .click({force: true});
     cy.contains("Confirm")
       .click();

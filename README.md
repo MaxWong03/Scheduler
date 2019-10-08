@@ -4,7 +4,7 @@ Interview Scheduler is a Full Stack Web App built in `ReactJS` with `Storybook`,
 ## Final Product
 
 ### Days Navigation
-![Days Navigation]()
+![Days Navigation](https://github.com/MaxWong03/Scheduler/blob/master/docs/nav.gif)
 ### Creating an Appointment
 ![Creating Appointment]()
 ### Editing an Appointment

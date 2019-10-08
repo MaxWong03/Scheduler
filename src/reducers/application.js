@@ -45,4 +45,4 @@ export default function reducer (state, action) {
   return stateLookup[action.type](state, action.value) || new Error(`Tried to reduce with unsupported action type: ${action.type}`);
 };
 
-export {SET_DAY ,SET_APPLICATION_DATA ,SET_INTERVIEW ,COUNT_SPOTS ,SET_APPOINTMENT};
+export {SET_DAY ,SET_APPLICATION_DATA ,SET_INTERVIEW ,COUNT_SPOTS ,SET_APPOINTMENT, stateLookup};

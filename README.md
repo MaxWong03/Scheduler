@@ -62,9 +62,9 @@
 ### If you want to tinker with the app ...
 #### This app is deployed using Heroku, CircleCI, and Netlify
 * Go to [Interview Scheduler](https://sharp-fermat-58b310.netlify.com)
-**The api server was deployed to heroku using the free plan. After thirty minutes of inactivity our server instance will shutdown. Simply make a request by doing one of the following:**
-1) Go to `https://scheduler-lighthouse-lab.herokuapp.com/api/days` on your browser
-2) `curl https://scheduler-lighthouse-lab.herokuapp.com/api/days` on your terminal
+* **The api server was deployed to heroku using the free plan. After thirty minutes of inactivity our server instance will shutdown. Simply make a request by doing one of the following:**
+  1) Go to `https://scheduler-lighthouse-lab.herokuapp.com/api/days` on your browser
+  2) `curl https://scheduler-lighthouse-lab.herokuapp.com/api/days` on your terminal
 
 ### If you want to tinker with the source code ...
 1) Fork this repository, then clone your fork of this repository.

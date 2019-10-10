@@ -5,9 +5,9 @@ const SET_APPOINTMENT = "SET_APPOINTMENT";
 
 
 const stateLookup = {
-  [SET_DAY]: (state, day) => {
-    return ({ ...state, day });
-  },
+  // [SET_DAY]: (state, day) => {
+  //   return ({ ...state, day });
+  // },
   [SET_APPLICATION_DATA]: (state, value) => {
     const [days, appointments, interviewers] = value;
     return ({ ...state, days, appointments, interviewers });

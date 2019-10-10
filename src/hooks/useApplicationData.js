@@ -31,6 +31,7 @@ export default function useApplicationData() {
   const setDay = day => dispatchState({ type: SET_DAY, value: day });
 
   useEffect(() => {
+    console.log(process.env.REACT_APP_API_BASE_URL);
     const daysPromise = axios.get(`/api/days`);
     const appointmentPromise = axios.get(`/api/appointments`);
     const interviewersPromise = axios.get(`/api/interviewers`);
